@@ -1,204 +1,89 @@
 import { Link } from "react-router-dom";
 
 export default function Login() {
-  const handleHover = (e) => {
-    e.target.style.border = "1px solid #2563eb";
-    e.target.style.color = "#2563eb";
-  };
-
-  const handleLeave = (e) => {
-    e.target.style.border = "1px solid #e5e7eb";
-    e.target.style.color = "#374151";
-  };
-
   return (
-    <div style={styles.page}>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center px-6 font-sans">
+      
+      {/* Logo outside the card to match modern SaaS trends */}
+      <Link to="/" className="text-2xl font-black text-[#1e1b4b] tracking-tight mb-8">
+        TaxPal
+      </Link>
 
-      <div style={styles.card}>
-
-        {/* Logo */}
-        <div style={styles.logo}>TaxPal</div>
-
+      <div className="w-full max-w-[440px] bg-white p-10 md:p-12 rounded-[2.5rem] shadow-xl shadow-purple-100/50 border border-slate-100">
+        
         {/* Heading */}
-        <h2 style={styles.heading}>Welcome Back</h2>
-        <p style={styles.subheading}>
-          Enter your credentials to access your account
-        </p>
-
-        {/* Email */}
-        <label style={styles.label}>Email address</label>
-        <input
-          type="email"
-          placeholder="Enter email"
-          style={styles.input}
-        />
-
-        {/* Password */}
-        <div style={styles.passwordRow}>
-          <label style={styles.label}>Password</label>
-          <span style={styles.forgot}>Forgot Password?</span>
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-black text-[#1e1b4b] mb-3">Welcome Back</h2>
+          <p className="text-slate-500 font-medium text-sm">
+            Enter your credentials to access your account
+          </p>
         </div>
 
-        <input
-          type="password"
-          placeholder="••••••••••"
-          style={styles.input}
-        />
+        <form className="space-y-5">
+          {/* Email */}
+          <div>
+            <label className="block text-[13px] font-black text-[#1e1b4b] uppercase tracking-wider mb-2 ml-1">
+              Email address
+            </label>
+            <input
+              type="email"
+              placeholder="name@company.com"
+              className="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:border-[#9333ea] focus:ring-4 focus:ring-purple-50 outline-none transition-all placeholder:text-slate-300 font-medium"
+            />
+          </div>
 
-        {/* Sign In */}
-        <button style={styles.signInBtn}>Sign In</button>
+          {/* Password */}
+          <div>
+            <div className="flex justify-between items-center mb-2 ml-1">
+              <label className="text-[13px] font-black text-[#1e1b4b] uppercase tracking-wider">
+                Password
+              </label>
+              <Link to="/forgot" className="text-[13px] font-bold text-[#9333ea] hover:underline">
+                Forgot Password?
+              </Link>
+            </div>
+            <input
+              type="password"
+              placeholder="••••••••••"
+              className="w-full px-5 py-4 rounded-2xl border border-slate-200 focus:border-[#9333ea] focus:ring-4 focus:ring-purple-50 outline-none transition-all placeholder:text-slate-300 font-medium"
+            />
+          </div>
+
+          {/* Sign In Button */}
+          <button className="w-full bg-[#9333ea] text-white py-4 rounded-2xl font-black text-lg shadow-lg shadow-purple-200 hover:bg-purple-700 hover:scale-[0.99] transition-all mt-4">
+            Sign In
+          </button>
+        </form>
 
         {/* Divider */}
-        <div style={styles.divider}>
-          <div style={styles.line}></div>
-          <span style={styles.or}>OR</span>
-          <div style={styles.line}></div>
+        <div className="flex items-center my-8">
+          <div className="flex-1 h-[1px] bg-slate-100"></div>
+          <span className="mx-4 text-[11px] font-black text-slate-400 tracking-widest uppercase">OR</span>
+          <div className="flex-1 h-[1px] bg-slate-100"></div>
         </div>
 
         {/* Social Buttons */}
-        <div style={styles.socialContainer}>
-          <button
-            style={styles.socialBtn}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleLeave}
-          >
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-slate-200 font-bold text-slate-600 hover:bg-slate-50 transition-all text-sm">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="G" />
             Google
           </button>
 
-          <button
-            style={styles.socialBtn}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleLeave}
-          >
+          <button className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-slate-200 font-bold text-slate-600 hover:bg-slate-50 transition-all text-sm">
+            <img src="https://www.svgrepo.com/show/512317/github-142.svg" className="w-4 h-4" alt="GH" />
             GitHub
           </button>
         </div>
 
-        {/* Signup */}
-        <p style={styles.signupText}>
-          Don't have an account? <Link to="/register">Sign Up</Link>
+        {/* Signup Link */}
+        <p className="text-center mt-10 text-sm font-medium text-slate-500">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-[#9333ea] font-black hover:underline">
+            Sign Up
+          </Link>
         </p>
 
       </div>
     </div>
   );
 }
-
-const styles = {
-
-  page: {
-    height: "100vh",
-    background: "#f9fafb",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontFamily: "sans-serif"
-  },
-
-  card: {
-    width: "380px",
-    background: "#fff",
-    padding: "40px",
-    borderRadius: "12px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
-    textAlign: "center"
-  },
-
-  logo: {
-    fontSize: "20px",
-    fontWeight: "600",
-    color: "#2563eb",
-    marginBottom: "20px"
-  },
-
-  heading: {
-    margin: 0
-  },
-
-  subheading: {
-    color: "#6b7280",
-    fontSize: "14px",
-    marginBottom: "25px"
-  },
-
-  label: {
-    display: "block",
-    textAlign: "left",
-    fontSize: "14px",
-    marginBottom: "5px"
-  },
-
-  input: {
-    width: "100%",
-    padding: "12px",
-    borderRadius: "8px",
-    border: "1px solid #e5e7eb",
-    marginBottom: "15px"
-  },
-
-  passwordRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-
-  forgot: {
-    fontSize: "13px",
-    color: "#2563eb",
-    cursor: "pointer"
-  },
-
-  signInBtn: {
-    width: "100%",
-    padding: "12px",
-    background: "#2563eb",
-    color: "#fff",
-    border: "none",
-    borderRadius: "8px",
-    fontWeight: "500",
-    marginTop: "10px",
-    cursor: "pointer"
-  },
-
-  divider: {
-    display: "flex",
-    alignItems: "center",
-    margin: "20px 0"
-  },
-
-  line: {
-    flex: 1,
-    height: "1px",
-    background: "#e5e7eb"
-  },
-
-  or: {
-    margin: "0 10px",
-    color: "#9ca3af",
-    fontSize: "14px"
-  },
-
-  socialContainer: {
-    display: "flex",
-    gap: "10px"
-  },
-
-  socialBtn: {
-    flex: 1,
-    padding: "10px",
-    borderRadius: "8px",
-    border: "1px solid #e5e7eb",
-    background: "#ffffff",
-    color: "#374151",
-    fontWeight: "500",
-    cursor: "pointer",
-    transition: "0.2s"
-  },
-
-  signupText: {
-    marginTop: "20px",
-    fontSize: "14px",
-    color: "#6b7280"
-  }
-
-};

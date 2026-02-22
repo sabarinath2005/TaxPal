@@ -1,163 +1,123 @@
 import { Link } from "react-router-dom";
 
 export default function Register() {
-
   return (
-    <div style={styles.page}>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center py-12 px-6 font-sans">
+      
+      {/* Brand Logo - Bold & High Contrast */}
+      <Link to="/" className="text-2xl font-black text-[#1e1b4b] tracking-tight mb-8">
+        TaxPal
+      </Link>
 
-      <div style={styles.card}>
-
-        {/* Logo */}
-        <div style={styles.logo}>TaxPal</div>
-
+      <div className="w-full max-w-[500px] bg-white p-10 md:p-12 rounded-[2.5rem] shadow-xl shadow-purple-100/50 border border-slate-100">
+        
         {/* Heading */}
-        <h2 style={styles.heading}>Create Your Account</h2>
-        <p style={styles.subheading}>
-          Start managing your finances today
-        </p>
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-black text-[#1e1b4b] mb-3">Create Your Account</h2>
+          <p className="text-slate-500 font-medium text-sm">
+            Start managing your finances today
+          </p>
+        </div>
 
-        {/* Full Name */}
-        <label style={styles.label}>Full Name</label>
-        <input
-          type="text"
-          placeholder="Enter full name"
-          style={styles.input}
-        />
+        <form className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Full Name */}
+            <div>
+              <label className="block text-[11px] font-black text-[#1e1b4b] uppercase tracking-[0.15em] mb-2 ml-1">
+                Full Name
+              </label>
+              <input
+                type="text"
+                placeholder="John Doe"
+                className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-[#9333ea] focus:ring-4 focus:ring-purple-50 outline-none transition-all placeholder:text-slate-300 font-medium text-sm"
+              />
+            </div>
 
-        {/* Email */}
-        <label style={styles.label}>Email</label>
-        <input
-          type="email"
-          placeholder="Enter email"
-          style={styles.input}
-        />
+            {/* Email */}
+            <div>
+              <label className="block text-[11px] font-black text-[#1e1b4b] uppercase tracking-[0.15em] mb-2 ml-1">
+                Email
+              </label>
+              <input
+                type="email"
+                placeholder="name@company.com"
+                className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-[#9333ea] focus:ring-4 focus:ring-purple-50 outline-none transition-all placeholder:text-slate-300 font-medium text-sm"
+              />
+            </div>
+          </div>
 
-        {/* Password */}
-        <label style={styles.label}>Password</label>
-        <input
-          type="password"
-          placeholder="••••••••"
-          style={styles.input}
-        />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Password */}
+            <div>
+              <label className="block text-[11px] font-black text-[#1e1b4b] uppercase tracking-[0.15em] mb-2 ml-1">
+                Password
+              </label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-[#9333ea] focus:ring-4 focus:ring-purple-50 outline-none transition-all placeholder:text-slate-300 font-medium text-sm"
+              />
+            </div>
 
-        {/* Confirm Password */}
-        <label style={styles.label}>Confirm Password</label>
-        <input
-          type="password"
-          placeholder="••••••••"
-          style={styles.input}
-        />
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-[11px] font-black text-[#1e1b4b] uppercase tracking-[0.15em] mb-2 ml-1">
+                Confirm
+              </label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-[#9333ea] focus:ring-4 focus:ring-purple-50 outline-none transition-all placeholder:text-slate-300 font-medium text-sm"
+              />
+            </div>
+          </div>
 
-        {/* Country */}
-        <label style={styles.label}>Country</label>
-        <select style={styles.input}>
-          <option>Select your country</option>
-          <option>India</option>
-          <option>USA</option>
-          <option>UK</option>
-        </select>
+          {/* Country Select */}
+          <div>
+            <label className="block text-[11px] font-black text-[#1e1b4b] uppercase tracking-[0.15em] mb-2 ml-1">
+              Country
+            </label>
+            <select className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-[#9333ea] focus:ring-4 focus:ring-purple-50 outline-none transition-all font-medium text-sm bg-white appearance-none cursor-pointer">
+              <option>Select your country</option>
+              <option>India</option>
+              <option>USA</option>
+              <option>UK</option>
+            </select>
+          </div>
 
-        {/* Income Bracket */}
-        <label style={styles.label}>Income Bracket (Optional)</label>
-        <select style={styles.input}>
-          <option>Select your income bracket</option>
-          <option>$0-$25k</option>
-          <option>$25k-$50k</option>
-          <option>$50k-$100k</option>
-        </select>
+          {/* Income Bracket Select */}
+          <div>
+            <label className="block text-[11px] font-black text-[#1e1b4b] uppercase tracking-[0.15em] mb-2 ml-1">
+              Income Bracket (Optional)
+            </label>
+            <select className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 focus:border-[#9333ea] focus:ring-4 focus:ring-purple-50 outline-none transition-all font-medium text-sm bg-white appearance-none cursor-pointer">
+              <option>Select your income bracket</option>
+              <option>$0-$25k</option>
+              <option>$25k-$50k</option>
+              <option>$50k-$100k</option>
+            </select>
+          </div>
 
-        {/* Sign Up */}
-        <button style={styles.signUpBtn}>Sign Up</button>
+          {/* Sign Up Button */}
+          <button className="w-full bg-[#9333ea] text-white py-4 rounded-2xl font-black text-lg shadow-lg shadow-purple-200 hover:bg-purple-700 hover:scale-[0.99] transition-all mt-6">
+            Sign Up
+          </button>
+        </form>
 
         {/* Terms */}
-        <p style={styles.terms}>
-          By signing up, you agree to our Terms of Service and Privacy Policy
+        <p className="text-center mt-6 text-[11px] font-bold text-slate-400 leading-relaxed max-w-[300px] mx-auto">
+          By signing up, you agree to our <span className="text-slate-600 hover:text-[#9333ea] cursor-pointer">Terms of Service</span> and <span className="text-slate-600 hover:text-[#9333ea] cursor-pointer">Privacy Policy</span>.
         </p>
 
-        {/* Login */}
-        <p style={styles.loginText}>
-          Already have an account? <Link to="/">Login</Link>
+        {/* Login Link */}
+        <p className="text-center mt-10 text-sm font-medium text-slate-500">
+          Already have an account?{" "}
+          <Link to="/login" className="text-[#9333ea] font-black hover:underline">
+            Login
+          </Link>
         </p>
 
       </div>
     </div>
   );
 }
-
-const styles = {
-
-  page: {
-    height: "100vh",
-    background: "#f9fafb",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontFamily: "sans-serif"
-  },
-
-  card: {
-    width: "380px",
-    background: "#fff",
-    padding: "40px",
-    borderRadius: "12px",
-    boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
-    textAlign: "center"
-  },
-
-  logo: {
-    fontSize: "20px",
-    fontWeight: "600",
-    color: "#2563eb",
-    marginBottom: "20px"
-  },
-
-  heading: {
-    margin: 0
-  },
-
-  subheading: {
-    color: "#6b7280",
-    fontSize: "14px",
-    marginBottom: "25px"
-  },
-
-  label: {
-    display: "block",
-    textAlign: "left",
-    fontSize: "14px",
-    marginBottom: "5px"
-  },
-
-  input: {
-    width: "100%",
-    padding: "12px",
-    borderRadius: "8px",
-    border: "1px solid #e5e7eb",
-    marginBottom: "15px"
-  },
-
-  signUpBtn: {
-    width: "100%",
-    padding: "12px",
-    background: "#2563eb",
-    color: "#fff",
-    border: "none",
-    borderRadius: "8px",
-    fontWeight: "500",
-    marginTop: "10px",
-    cursor: "pointer"
-  },
-
-  terms: {
-    fontSize: "12px",
-    color: "#9ca3af",
-    marginTop: "15px"
-  },
-
-  loginText: {
-    marginTop: "20px",
-    fontSize: "14px",
-    color: "#6b7280"
-  }
-
-};
