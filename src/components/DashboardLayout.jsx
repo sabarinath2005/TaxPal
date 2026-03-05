@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
     LayoutDashboard, Receipt, Wallet, PieChart,
@@ -15,7 +15,14 @@ const NAV = [
     { icon: FileText, label: 'Reports', path: '/reports' },
 ];
 
-function SidebarContent({ navigate, location, onClose }) {
+function SidebarContent({ navigate, location, onClose, user }) {
+
+       const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/login");
+    };
+
     return (
         <div className="flex flex-col h-full" style={{ background: 'var(--sidebar-bg)' }}>
             {/* Logo */}
@@ -62,13 +69,14 @@ function SidebarContent({ navigate, location, onClose }) {
 
             <div className="mx-5 h-px my-4" style={{ background: 'rgba(255,255,255,0.06)' }} />
 
-            {/* User */}
+            {/* Logged User */}
             <div className="px-3 pb-5">
                 <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl mb-2" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Alex" className="w-8 h-8 rounded-lg object-cover shrink-0" style={{ background: '#1E293B' }} />
+                    <img  src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.fullName || 'User'}`}
+                        alt="user" className="w-8 h-8 rounded-lg object-cover shrink-0" style={{ background: '#1E293B' }} />
                     <div className="flex-1 min-w-0">
-                        <p className="text-white text-[12px] font-bold truncate">Alex Morgan</p>
-                        <p className="text-[10px] truncate" style={{ color: '#64748B' }}>alex.m@taxpal.com</p>
+                        <p className="text-white text-[12px] font-bold truncate">{user?.fullName || "User"}</p>
+                        <p className="text-[10px] truncate" style={{ color: '#64748B' }}>{user?.email || "user@email.com"}</p>
                     </div>
                 </div>
                 <div className="flex gap-2">
@@ -96,8 +104,18 @@ export default function DashboardLayout({ children }) {
     const navigate = useNavigate();
     const location = useLocation();
     const { summary, budgets } = useAppContext();
+
+    const [user, setUser] = useState(null);
     const [showNotif, setShowNotif] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+     useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
+
 
     const currentPage = NAV.find(m => m.path === location.pathname)?.label ?? 'Settings';
 
@@ -113,7 +131,7 @@ export default function DashboardLayout({ children }) {
 
             {/* ── DESKTOP SIDEBAR ────────────────────────── */}
             <aside className="hidden lg:flex flex-col fixed top-0 left-0 h-screen z-50 w-64" style={{ background: 'var(--sidebar-bg)' }}>
-                <SidebarContent navigate={navigate} location={location} />
+                <SidebarContent navigate={navigate} location={location} user={user} />
             </aside>
 
             {/* ── MOBILE SIDEBAR DRAWER ──────────────────── */}
@@ -125,7 +143,7 @@ export default function DashboardLayout({ children }) {
                             onClick={() => setSidebarOpen(false)} />
                         <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', stiffness: 300, damping: 35 }}
                             className="fixed top-0 left-0 h-screen z-50 w-72 lg:hidden">
-                            <SidebarContent navigate={navigate} location={location} onClose={() => setSidebarOpen(false)} />
+                            <SidebarContent navigate={navigate} location={location} user={user} onClose={() => setSidebarOpen(false)} />
                         </motion.div>
                     </>
                 )}
