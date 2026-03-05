@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Database, Bell, Shield, ChevronRight, Trash2, Plus, X, Check, Eye, EyeOff, BellRing, Mail, Smartphone, Globe } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout';
 import { useAppContext } from '../context/AppContext';
+import { updateProfile } from "../services/authService";
 
 const CAT_COLORS = ['#6366F1', '#3B82F6', '#10B981', '#F59E0B', '#F43F5E', '#0EA5E9', '#A855F7', '#64748B'];
 const TABS = [
@@ -153,14 +154,57 @@ function CategoriesPanel() {
 
 // ─── Profile ─────────────────────────────────────────────────────────────────
 function ProfilePanel() {
-    const [profile, setProfile] = useState({ name: 'Alex Morgan', email: 'alex@example.com', country: 'United States', bracket: '$50,000 – $100,000' });
+    const [profile, setProfile] = useState({ name: "", email: "", country: "", bracket: "" });
     const [saved, setSaved] = useState(false);
+
+     React.useEffect(() => {
+
+        const storedUser = localStorage.getItem("user");
+
+        if (storedUser) {
+            const user = JSON.parse(storedUser);
+
+            setProfile({
+                name: user.fullName || "",
+                email: user.email || "",
+                country: user.country || "",
+                bracket: user.incomeBracket || ""
+            });
+        }
+
+    }, []);
+
     const set = (k, v) => setProfile(p => ({ ...p, [k]: v }));
+
+      // ================= UPDATE PROFILE =================
+    const handleSave = async () => {
+
+        try {
+
+            const res = await updateProfile({
+                fullName: profile.name,
+                email: profile.email,
+                country: profile.country,
+                incomeBracket: profile.bracket
+            });
+
+            if (res.user) {
+                localStorage.setItem("user", JSON.stringify(res.user));
+            }
+
+            setSaved(true);
+            setTimeout(() => setSaved(false), 2000);
+
+        } catch (err) {
+            alert("Failed to update profile");
+        }
+
+    };
 
     return (
         <Panel title="Profile Settings">
             <div className="flex flex-col sm:flex-row items-start gap-5 p-4 rounded-xl mb-6" style={{ background: '#F8FAFC', border: '1px solid #F1F5F9' }}>
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" alt="Avatar" className="w-14 h-14 rounded-xl object-cover shrink-0" style={{ background: '#E2E8F0' }} />
+                <img src={'https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}'} alt="Avatar" className="w-14 h-14 rounded-xl object-cover shrink-0" style={{ background: '#E2E8F0' }} />
                 <div>
                     <p className="text-[15px] font-black text-slate-900">{profile.name}</p>
                     <p className="label mt-0.5">{profile.email}</p>
@@ -183,9 +227,14 @@ function ProfilePanel() {
                 </Field>
             </div>
 
-            <button onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}
+             <button
+                onClick={handleSave}
                 className="btn-primary"
-                style={saved ? { background: 'var(--income)', boxShadow: '0 2px 10px rgba(16,185,129,0.25)' } : {}}>
+                style={saved
+                    ? { background: 'var(--income)', boxShadow: '0 2px 10px rgba(16,185,129,0.25)' }
+                    : {}
+                }
+            >
                 {saved ? <><Check size={14} /> Saved!</> : 'Save Changes'}
             </button>
         </Panel>
