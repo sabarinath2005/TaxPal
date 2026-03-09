@@ -7,6 +7,10 @@ import {
 import DashboardLayout from '../components/DashboardLayout';
 import { useAppContext } from '../context/AppContext';
 
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
+
 const fmt = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(n);
 const fmtDate = () => new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
@@ -35,11 +39,80 @@ export default function Reports() {
         { id: 3, name: 'Category_Comparison_2024', date: 'Jan 10, 2025', size: '0.8 MB' },
     ];
 
+            // ================= EXPORT CSV =================
+        const exportCSV = () => {
+
+            const headers = [
+            "Description",
+            "Category",
+            "Type",
+            "Amount",
+            "Date",
+            "Notes",
+            "Income Bracket"
+            ];
+
+        const rows = transactions.map(t => [
+            t.label,
+            t.category,
+            t.group,
+            t.flow,
+            t.date,
+            t.notes || "",
+            t.incomeBracket || ""
+            ]);
+
+        const csvContent =
+            "data:text/csv;charset=utf-8," +
+            [headers, ...rows].map(row => row.join(",")).join("\n");
+
+        const link = document.createElement("a");
+        link.href = encodeURI(csvContent);
+        link.download = "taxpal_report.csv";
+        document.body.appendChild(link);
+        link.click();
+        };
+
+        // ================= EXPORT PDF =================
+            const exportPDF = () => {
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text("TaxPal Financial Report", 14, 15);
+
+            doc.setFontSize(11);
+            doc.text(`Period: ${config.period}`, 14, 25);
+            doc.text(`Generated: ${fmtDate()}`, 14, 32);
+
+            const tableData = transactions.map(t => [
+            t.label,
+            t.category,
+            t.group,
+            `$${t.flow}`,
+            t.date
+            ]);
+
+            autoTable(doc, {
+            startY: 40,
+            head: [["Description", "Category", "Type", "Amount", "Date"]],
+            body: tableData
+            });
+
+            doc.save("taxpal_report.pdf");
+            };
+
     const handleGenerate = () => {
+        if (config.format.includes("PDF")) {
+        exportPDF();
+        }
+
+        if (config.format.includes("CSV")) {
+            exportCSV();
+        }
+
         setGenerated(true);
-        setShowPreview(true);
+
         setTimeout(() => setGenerated(false), 2000);
-    };
+            };
 
     return (
         <DashboardLayout>

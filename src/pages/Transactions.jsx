@@ -4,6 +4,9 @@ import { Plus, Search, Trash2, ArrowUpRight, ArrowDownLeft, Download, X, Check }
 import DashboardLayout from '../components/DashboardLayout';
 import { useAppContext } from '../context/AppContext';
 
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 const fmt = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(n);
 
 const INCOME_BRACKETS = [
@@ -24,6 +27,7 @@ export default function Transactions() {
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState(EMPTY_FORM);
     const [toast, setToast] = useState(false);
+    const [showExportMenu, setShowExportMenu] = useState(false);
 
     const cats = form.group === 'INCOME' ? incomeCategories : expenseCategories;
     const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
@@ -55,6 +59,71 @@ export default function Transactions() {
     const totalOut = transactions.filter(t => t.group === 'EXPENSE').reduce((s, t) => s + t.flow, 0);
     const net = totalIn - totalOut;
 
+    // ================= EXPORT CSV =================
+const exportCSV = () => {
+
+    const headers = [
+        "Description",
+        "Category",
+        "Type",
+        "Amount",
+        "Date",
+        "Notes",
+        "Income Bracket"
+    ];
+
+    const rows = filtered.map(t => [
+        t.label,
+        t.category,
+        t.group,
+        t.flow,
+        t.date,
+        t.notes || "",
+        t.incomeBracket || ""
+    ]);
+
+    let csvContent =
+        "data:text/csv;charset=utf-8," +
+        [headers, ...rows]
+            .map(row => row.join(","))
+            .join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "transactions.csv");
+
+    document.body.appendChild(link);
+    link.click();
+};
+
+
+
+// ================= EXPORT PDF =================
+const exportPDF = () => {
+
+    const doc = new jsPDF();
+
+    doc.text("TaxPal Transactions", 14, 15);
+
+    const tableData = filtered.map(t => [
+        t.label,
+        t.category,
+        t.group,
+        `$${t.flow}`,
+        t.date
+    ]);
+
+    autoTable(doc, {
+        startY: 20,
+        head: [["Description", "Category", "Type", "Amount", "Date"]],
+        body: tableData
+    });
+
+    doc.save("transactions.pdf");
+};
+
     return (
         <DashboardLayout>
             {/* Header */}
@@ -63,11 +132,59 @@ export default function Transactions() {
                     <h1 className="text-2xl font-black tracking-tight text-slate-900 mb-0.5">Transactions</h1>
                     <p className="label">Track earnings & business spending</p>
                 </div>
-                <div className="flex gap-2">
-                    <button className="btn-secondary"><Download size={14} /> Export</button>
-                    <button className="btn-primary" onClick={() => setShowForm(true)}><Plus size={14} /> Add Entry</button>
-                </div>
-            </div>
+                <div className="flex gap-2 relative">
+
+                 {/* Export Button */}
+                    <button
+                     className="btn-secondary"
+                     onClick={() => setShowExportMenu(v => !v)}
+                     >
+                <Download size={14} /> Export
+                </button>
+
+                 {/* Dropdown */}
+                <AnimatePresence>
+                 {showExportMenu && (
+                 <motion.div
+                    initial={{ opacity: 0, y: -6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute top-10 left-0 w-36 bg-white rounded-xl shadow-lg border border-slate-200 z-20"
+                 >
+                    <button
+                    onClick={() => {
+                        exportCSV();
+                        setShowExportMenu(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-slate-50"
+                    >
+                     Export CSV
+                    </button>
+
+                    <button
+                        onClick={() => {
+                        exportPDF();
+                        setShowExportMenu(false);
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm hover:bg-slate-50"
+                        >
+                        Export PDF
+                        </button>
+
+                    </motion.div>
+                     )}
+                     </AnimatePresence>
+
+                     {/* Add Transaction Button */}
+                     <button
+                        className="btn-primary"
+                        onClick={() => setShowForm(true)}
+                        >
+                         <Plus size={14} /> Add Entry
+                        </button>
+
+                            </div>
+                            </div>
 
             {/* Toast */}
             <AnimatePresence>
