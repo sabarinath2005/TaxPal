@@ -39,7 +39,7 @@ export default function Register() {
 
       alert("Account created successfully");
 
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
 
     } catch (error) {
 
@@ -79,7 +79,7 @@ export default function Register() {
               <input
                 type="text"
                 name="fullName"
-                placeholder="John Doe"
+                placeholder="Enter your name"
                 onChange={handleChange}
                 className="w-full px-6 py-4 rounded-3xl bg-purple-50/30 border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none transition-all placeholder:text-slate-300 font-bold text-sm"
               />

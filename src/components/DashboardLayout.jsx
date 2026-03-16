@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-    LayoutDashboard, Receipt, Wallet, PieChart,
-    FileText, Settings, LogOut, Bell, X, ChevronRight, Menu
-} from 'lucide-react';
+import {LayoutDashboard, Receipt, Wallet, PieChart,FileText, Settings, LogOut, Bell, X, ChevronRight, Menu} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppContext } from '../context/AppContext';
 
@@ -20,7 +17,7 @@ function SidebarContent({ navigate, location, onClose, user }) {
        const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        navigate("/login");
+        navigate("/login", { replace: true });
     };
 
     return (
@@ -87,7 +84,7 @@ function SidebarContent({ navigate, location, onClose, user }) {
                         onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.color = '#94A3B8'; }}>
                         <Settings size={12} /> Settings
                     </button>
-                    <button onClick={() => navigate('/login')}
+                    <button onClick={handleLogout}
                         className="w-9 flex items-center justify-center rounded-xl"
                         style={{ background: 'rgba(255,255,255,0.07)', color: '#94A3B8' }}
                         onMouseEnter={e => { e.currentTarget.style.background = 'rgba(244,63,94,0.15)'; e.currentTarget.style.color = '#F43F5E'; }}
@@ -116,6 +113,12 @@ export default function DashboardLayout({ children }) {
         }
     }, []);
 
+    useEffect(() => {
+     const token = localStorage.getItem("token");
+        if (!token) {
+        navigate("/login", { replace: true });
+        }
+     }, [navigate]);
 
     const currentPage = NAV.find(m => m.path === location.pathname)?.label ?? 'Settings';
 

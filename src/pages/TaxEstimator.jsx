@@ -78,37 +78,20 @@ export default function TaxEstimator() {
 
         e.preventDefault();
         setSaved(false);
-         console.log("Country selected:", form.country);
 
         const gross = +form.grossIncome || 0;
         const exp = +form.businessExpenses || 0;
         const ret = +form.retirement || 0;
         const health = +form.health || 0;
         const homeOffice = +form.homeOffice || 0;
-
         const netProfit = Math.max(gross - exp, 0);
-
-        console.log("Gross:", gross);
-console.log("Expenses:", exp);
-console.log("Net Profit:", netProfit);
 
         // 🇮🇳 INDIA TAX SYSTEM
         if (form.country === "India") {
 
-            console.log("India tax calculation triggered");
-
             const taxable = Math.max(netProfit - ret - health - homeOffice, 0);
-
-            console.log("Taxable income:", taxable);
-
             const total = calculateIndianTax(taxable);
-
-            console.log("Total Indian tax:", total);
-
             const quarterly = total / 4;
-
-            console.log("Quarterly tax:", quarterly);
-
             const effRate = gross > 0 ? (total / gross) * 100 : 0;
 
             setResult({

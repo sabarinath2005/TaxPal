@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { loginUser } from "../services/authService";
+import { Eye, EyeOff } from "lucide-react";
+
 
 export default function Login() {
 
@@ -10,6 +12,8 @@ export default function Login() {
     email: "",
     password: ""
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -27,7 +31,7 @@ export default function Login() {
 
       alert("Login successful");
 
-      navigate("/dashboard");
+     navigate("/dashboard", { replace: true });
 
     } catch (error) {
 
@@ -71,7 +75,7 @@ export default function Login() {
             <input
               type="email"
               name="email"
-              placeholder="name@company.com"
+              placeholder="Enter your email"
               onChange={handleChange}
               className="w-full px-6 py-5 rounded-3xl bg-purple-50/30 border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none transition-all placeholder:text-slate-300 font-bold"
             />
@@ -91,13 +95,24 @@ export default function Login() {
               </Link>
             </div>
 
-            <input
-              type="password"
-              name="password"
-              placeholder="••••••••••"
-              onChange={handleChange}
-              className="w-full px-6 py-5 rounded-3xl bg-purple-50/30 border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none transition-all placeholder:text-slate-300 font-bold"
-            />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="••••••••••"
+                  onChange={handleChange}
+                  className="w-full px-6 py-5 pr-14 rounded-3xl bg-purple-50/30 border-2 border-transparent focus:border-purple-100 focus:bg-white outline-none transition-all placeholder:text-slate-300 font-bold"
+                />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#6d28d9] transition-colors"
+                >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+              </div>
+
           </div>
 
           {/* Sign In Button */}
@@ -114,7 +129,7 @@ export default function Login() {
         <div className="flex items-center my-10">
           <div className="flex-1 h-[1px] bg-purple-50"></div>
           <span className="mx-4 text-[10px] font-black text-slate-300 tracking-widest">
-            SECURE ACCESS
+            LOGIN WITH
           </span>
           <div className="flex-1 h-[1px] bg-purple-50"></div>
         </div>

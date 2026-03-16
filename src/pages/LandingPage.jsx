@@ -152,7 +152,7 @@ const LandingPage = () => {
           </div>
 
           <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-slate-500 text-center md:text-left">
-            <p>© 2026 TAXPAL, INC. DESIGNED FOR THE FUTURE.</p>
+            <p>© 2026 TAXPAL INC</p>
             <div className="flex gap-8">
               <a href="#" className="hover:text-white">Privacy</a>
               <a href="#" className="hover:text-white">Terms</a>
